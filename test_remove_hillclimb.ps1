@@ -1,30 +1,28 @@
-﻿
-# Look users
+
 $fileDelCount = 0
 
 
-# Get user's local Temp directory
+# Get directory
 $dataDir = "C:\Program Files\WindowsApps\"
 
-# Finds all directories in Temp with exclusively numeric names
-$numDirs = Get-ChildItem -Path $dataDir -Attributes D | 
-            Where-Object { $_.Name -match '^\d+$' } | 
-            Sort-Object
+# Finds all directories in directory
+$numDirs = Get-ChildItem -Path $dataDir -Attributes D | Sort-Object
+
 
 # Loop numeric subdirectories
 foreach($tempDir in $numDirs)
 {
     $tDir = Join-Path -Path $dataDir -ChildPath $tempDir
 
-    # Test if subdir contains Diagnostics directory
+    # Test if subdir contains CLIMBRACING directory
     $diagDir = Join-Path -Path $tDir -ChildPath "CLIMBRACING"
     $hasDiag = Test-Path -Path $diagDir
 
-    # Test if subdir contains Outlook Logging directory
+    # Test if subdir contains Game directory
     $outlookDir = Join-Path -Path $tDir -ChildPath "game"
     $hasOutlook = Test-Path -Path $outlookDir
 
-    # Empty Diagnostics directory
+    # Empty CLIMBRACING directory
     if ($hasDiag)
     {
         $totalSubFiles = ( Get-ChildItem $diagDir | Measure-Object ).Count
@@ -33,7 +31,7 @@ foreach($tempDir in $numDirs)
         Get-ChildItem -Path $diagDir -Recurse | Remove-Item -force -recurse
     }
 
-    # Empty Outlook directory
+    # Empty Game directory
     if($hasOutlook)
     {
         $totalSubFiles = ( Get-ChildItem $outlookDir | Measure-Object ).Count
